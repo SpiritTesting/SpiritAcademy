@@ -16,10 +16,11 @@ function onLoadListener() {
 	
 	for (laufendeNummer = 0; laufendeNummer < json.length; laufendeNummer++ ) {
 		var nachricht = json[laufendeNummer];
-		neuerInhalt = neuerInhalt + "<li>" + nachricht + 
-			"<button type='button' onclick='nachrichtEntfernen(" + laufendeNummer + ")'>L&ouml;schen</button></li>";	
-	} 
-
+		var klasse = nachricht.startsWith(localStorage.getItem('username')) ? 'meinEintrag' : 'vonAnderen';
+		console.log(klasse);
+		neuerInhalt = neuerInhalt + "<li class='" + klasse + "'><button type='button' onclick='nachrichtEntfernen(" + 
+		laufendeNummer + ")'>X</button>" + nachricht + "</li>";	
+	}
 	neuerInhalt = neuerInhalt + "</ul>";
 
 	inhaltselement.innerHTML = neuerInhalt;
@@ -52,7 +53,9 @@ function setUsername() {
 document.onreadystatechange = () => {
 	if (document.readyState === 'complete') {
 		var username = localStorage.getItem('username');
-		document.getElementById('username').value = username;
+		if (username) {
+			document.getElementById('username').value = username;
+		}
 		aktualisieren();
 	}
 }
