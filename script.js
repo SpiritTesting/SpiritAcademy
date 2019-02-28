@@ -33,16 +33,26 @@ function nachrichtEntfernen(laufendeNummer) {
 }
 
 function neueNachrichtSenden() {
+	var name = document.getElementById("username").value;
 	var nachricht = document.getElementById("neueNachricht").value;
+	if (name) { 
+		nachricht = name + " sagt: " + nachricht; 
+	}
 	var request = new XMLHttpRequest();
 	request.addEventListener("load", () => { aktualisieren(); });
 	request.open("POST", serverAdresse);
 	request.send(nachricht);
 }
 
+function setUsername() {
+	var name = document.getElementById("username").value;
+	localStorage.setItem('username', name);
+}
+
 document.onreadystatechange = () => {
-	console.log("ReadyState: " + document.readyState);
 	if (document.readyState === 'complete') {
+		var username = localStorage.getItem('username');
+		document.getElementById('username').value = username;
 		aktualisieren();
 	}
 }
@@ -52,4 +62,4 @@ window.setInterval(() => {
 	request.addEventListener("load", onLoadListener);
 	request.open("GET", serverAdresse);
 	request.send();
-}, 100);
+}, 1000);
